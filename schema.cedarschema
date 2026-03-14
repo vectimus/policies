@@ -1,0 +1,71 @@
+namespace Vectimus {
+
+  entity Agent = {
+    name: String,
+    framework?: String,
+  };
+
+  entity Tool = {
+    name: String,
+    server_name?: String,
+    tool_name?: String,
+  };
+
+  entity Resource = {
+    command?: String,
+    path?: String,
+    server_name?: String,
+    tool_name?: String,
+  };
+
+  entity MCP_Server = {
+    name: String,
+    url?: String,
+  };
+
+  action shell_command appliesTo {
+    principal: [Agent],
+    resource: [Resource],
+  };
+
+  action file_read appliesTo {
+    principal: [Agent],
+    resource: [Resource],
+  };
+
+  action file_write appliesTo {
+    principal: [Agent],
+    resource: [Resource],
+  };
+
+  action git_operation appliesTo {
+    principal: [Agent],
+    resource: [Resource],
+  };
+
+  action infrastructure appliesTo {
+    principal: [Agent],
+    resource: [Resource],
+  };
+
+  action package_operation appliesTo {
+    principal: [Agent],
+    resource: [Resource],
+  };
+
+  action mcp_tool appliesTo {
+    principal: [Agent],
+    resource: [Tool, MCP_Server],
+  };
+
+  action agent_message appliesTo {
+    principal: [Agent],
+    resource: [Agent],
+  };
+
+  action agent_spawn appliesTo {
+    principal: [Agent],
+    resource: [Agent],
+  };
+
+}

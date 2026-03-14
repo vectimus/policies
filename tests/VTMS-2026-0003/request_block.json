@@ -1,0 +1,6 @@
+{
+  "principal": "Agent::\"coding_agent\"",
+  "action": "Action::\"shell_command\"",
+  "resource": "Resource::\"tf_destroy\"",
+  "expected": "DENY"
+}

@@ -30,6 +30,15 @@ owasp-agentic/           # OWASP Top 10 for Agentic Applications (2026)
   asi07_inter_agent.cedar
   asi08_cascading_failures.cedar
   asi10_rogue_agents.cedar
+tests/                   # Incident replay fixtures for policy validation
+  VTMS-2026-0003/        # Terraform destroy incident
+    entities.json
+    request_block.json
+    request_allow.json
+
+VERSION                  # Current semantic version
+manifest.json            # Machine-readable pack manifest
+schema.cedarschema       # Cedar schema defining entity types and actions
 ```
 
 Each pack has a `pack.toml` manifest with name, version and dependency metadata. Each `.cedar` file contains one or more rules with `@id`, `@description`, `@incident`, `@controls` and `@enforcement` annotations.
@@ -44,6 +53,18 @@ This repo uses semantic versioning:
 
 Tag a release whenever policies change. Consumer repos (vectimus/vectimus, vectimus/openclaw) receive automated PRs via repository dispatch.
 
+## Sentinel Integration
+
+[Sentinel](https://github.com/vectimus/sentinel) is the automated security pipeline that analyzes AI agent incidents and opens PRs to this repo with new or updated policies. Its Security Engineer agent reads `manifest.json`, `VERSION`, and `schema.cedarschema` to understand the current policy landscape before proposing changes.
+
+## Test Fixtures
+
+The `tests/` directory contains incident replay fixtures used by Sentinel and consumer repos to validate policy decisions. Each subdirectory is named after an incident ID (e.g., `VTMS-2026-0003`) and contains:
+
+- `entities.json` — Cedar entities (Agent, Tool, Resource) involved in the incident
+- `request_block.json` — a request that the policies must DENY
+- `request_allow.json` — a related request that the policies must ALLOW (to verify no over-blocking)
+
 ## Consumer repos
 
 When a new tag is pushed, a GitHub Action dispatches a `policies-updated` event to consumer repos. Each consumer has its own sync workflow that downloads the tagged policies and opens a PR.
@@ -51,6 +72,7 @@ When a new tag is pushed, a GitHub Action dispatches a `policies-updated` event 
 Current consumers:
 - [vectimus/vectimus](https://github.com/vectimus/vectimus) (Python)
 - [vectimus/openclaw](https://github.com/vectimus/openclaw) (TypeScript)
+- [vectimus/sentinel](https://github.com/vectimus/sentinel) (Security pipeline)
 
 ## Contributing
 
