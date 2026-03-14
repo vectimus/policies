@@ -1,0 +1,21 @@
+name: Notify consumers of new policy release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repo: ['vectimus/vectimus', 'vectimus/openclaw']
+    steps:
+      - name: Dispatch to consumer repo
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.POLICY_SYNC_PAT }}
+          repository: ${{ matrix.repo }}
+          event-type: policies-updated
+          client-payload: '{"tag": "${{ github.ref_name }}"}'
