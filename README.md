@@ -1,6 +1,6 @@
 # Vectimus Policies
 
-Cedar policies that govern what AI coding agents can and cannot do. Every rule traces back to a real attack.
+Cedar policies that govern what AI coding agents can and cannot do. Every rule traces back to a real incident, published vulnerability or security framework scenario.
 
 ![Policies](https://img.shields.io/badge/packs-11-blue)
 ![License](https://img.shields.io/badge/license-Apache%202.0-green)
@@ -53,7 +53,7 @@ These annotations exist so auditors can trace controls to enforcement. Evidence 
 
 | Framework | Prefix | Coverage |
 |-----------|--------|----------|
-| OWASP Agentic Top 10 | `OWASP-ASI` | 9 of 10 categories enforced |
+| OWASP Agentic Top 10 | `OWASP-ASI` | All 10 categories enforced |
 | SOC 2 Type II | `SOC2-` | CC6.1, CC6.6, CC6.8, CC7.2, CC7.3, CC8.1 |
 | NIST AI RMF | `NIST-AI-` | GOVERN 1.1/1.5, MAP 1.5, MEASURE 2.5/2.6, MANAGE 2.2/3.2 |
 | NIST CSF 2.0 | `NIST-CSF-` | PR.DS, PR.PS, DE.CM, RS.AN |
