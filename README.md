@@ -1,46 +1,51 @@
 # Vectimus Policies
 
-Cedar policies for [Vectimus](https://github.com/vectimus/vectimus) — the single source of truth for all AI agent governance rules.
+Cedar policies for [Vectimus](https://github.com/vectimus/vectimus) -- the single source of truth for all AI agent governance rules.
 
 These policies are language-agnostic Cedar text files. They produce identical allow/deny decisions whether evaluated by cedarpy (Python), cedar-wasm (TypeScript) or any other conformant Cedar implementation.
 
 ## Structure
 
-```
-base/                    # Baseline security rules mapped to real-world incidents
-  pack.toml              # Pack manifest (name, version, description)
-  agent_safety.cedar     # Agent spawning and permission bypass
-  database_safety.cedar  # DROP, TRUNCATE, destructive SQL
-  destructive_commands.cedar  # rm -rf, kill -9, terraform destroy
-  file_protection.cedar  # .env reads, config overwrites, dotfile access
-  git_safety.cedar       # force-push, reset --hard, branch deletion
-  infrastructure_safety.cedar  # Deploy, cloud CLI, Terraform/Pulumi
-  mcp_tools.cedar        # MCP server lockdown, input inspection
-  package_operations.cedar     # npm publish, lockfile tampering
-  secret_access.cedar    # SSH keys, API tokens, credential files
+Policies are organised by security domain. Each domain is an independent pack with its own `pack.toml` manifest.
 
-owasp-agentic/           # OWASP Top 10 for Agentic Applications (2026)
-  pack.toml              # Pack manifest (depends on base)
-  asi01_goal_hijack.cedar
-  asi02_tool_misuse.cedar
-  asi03_identity_privilege.cedar
-  asi04_supply_chain.cedar
-  asi05_code_execution.cedar
-  asi06_memory_poisoning.cedar
-  asi07_inter_agent.cedar
-  asi08_cascading_failures.cedar
-  asi10_rogue_agents.cedar
+```
+destructive-ops/         # Filesystem destruction, disk corruption, fork bombs
+secrets/                 # Credential, key and environment file protection
+supply-chain/            # Package publishing, lockfiles, registry configs, untrusted sources
+infrastructure/          # Cloud/container/IaC destruction, privilege escalation
+code-execution/          # Reverse shells, eval patterns, download-execute chains
+data-exfiltration/       # Encoded transfers, DNS tunnelling, credential piping
+file-integrity/          # CI/CD pipelines, certs, governance configs, agent instructions
+database/                # ORM destructive flags, DROP commands
+git-safety/              # Force push, reset --hard, clean -f
+mcp-safety/              # MCP server allowlisting, input parameter inspection
+agent-governance/        # Autonomy limits, spawn control, inter-agent comms, persistence
 ```
 
-Each pack has a `pack.toml` manifest with name, version and dependency metadata. Each `.cedar` file contains one or more rules with `@id`, `@description`, `@incident`, `@controls` and `@enforcement` annotations.
+Each pack has a `pack.toml` manifest with name, version and description. Each `.cedar` file contains one or more rules with `@id`, `@description`, `@incident`, `@controls` and `@enforcement` annotations.
+
+## Compliance framework mappings
+
+Every rule carries `@controls` annotations mapping to one or more compliance frameworks. The pack structure organises by security domain; compliance frameworks are cross-cutting views.
+
+| Framework | Annotation prefix | Example |
+|-----------|------------------|---------|
+| SOC 2 Type II | `SOC2-` | `SOC2-CC6.1` |
+| NIST AI RMF | `NIST-` | `NIST-AI-MG-3.2` |
+| NIST CSF 2.0 | `NIST-CSF-` | `NIST-CSF-PR.DS-01` |
+| EU AI Act | `EU-AI-` | `EU-AI-14` |
+| OWASP Agentic Top 10 | `OWASP-ASI` | `OWASP-ASI01` |
+| ISO 27001:2022 | `ISO27001-` | `ISO27001-A.8.3` |
+| SLSA | `SLSA-` | `SLSA-L2` |
+| CIS Controls | `CIS-` | `CIS-16` |
 
 ## Versioning
 
 This repo uses semantic versioning:
 
-- **Patch** (`v1.0.1`): rule tuning, false positive fixes, description changes
-- **Minor** (`v1.1.0`): new policies added, existing policies unchanged
-- **Major** (`v2.0.0`): policy removals, schema changes, behavioral changes to existing rules
+- **Patch** (`v2.0.1`): rule tuning, false positive fixes, description changes
+- **Minor** (`v2.1.0`): new policies added, existing policies unchanged
+- **Major** (`v3.0.0`): policy removals, schema changes, behavioral changes to existing rules
 
 Tag a release whenever policies change. Consumer repos (vectimus/vectimus, vectimus/openclaw) receive automated PRs via repository dispatch.
 
@@ -62,4 +67,4 @@ Current consumers:
 
 ## License
 
-Apache 2.0 — same as the main Vectimus project.
+Apache 2.0 -- same as the main Vectimus project.

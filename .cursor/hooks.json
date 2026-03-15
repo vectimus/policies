@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "/Users/jholland/Development/vectimus/vectimus/.venv/bin/vectimus hook --source cursor"
+      }
+    ]
+  }
+}

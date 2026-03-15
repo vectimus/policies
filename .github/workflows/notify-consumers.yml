@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repo: ['vectimus/vectimus', 'vectimus/openclaw']
+        repo: ['vectimus/vectimus', 'vectimus/openclaw', 'vectimus/sentinel']
     steps:
       - name: Dispatch to consumer repo
         uses: peter-evans/repository-dispatch@v3
