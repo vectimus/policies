@@ -69,10 +69,25 @@ These annotations exist so auditors can trace controls to enforcement. Evidence 
 3. **Human reviews and merges.** Every policy PR gets human approval before it ships.
 4. **Auto-sync to local installs.** Vectimus checks for policy updates from the Vectimus API every 24 hours. No manual intervention needed.
 
+## Sentinel Integration
+
+[Sentinel](https://github.com/vectimus/sentinel) is the automated security pipeline that analyzes AI agent incidents and opens PRs to this repo with new or updated policies. Its Security Engineer agent reads `manifest.json`, `VERSION`, and `schema.cedarschema` to understand the current policy landscape before proposing changes.
+
+## Test Fixtures
+
+The `tests/` directory contains incident replay fixtures used by Sentinel and consumer repos to validate policy decisions. Each subdirectory is named after an incident ID (e.g., `VTMS-2026-0003`) and contains:
+
+- `entities.json` — Cedar entities (Agent, Tool, Resource) involved in the incident
+- `request_block.json` — a request that the policies must DENY
+- `request_allow.json` — a related request that the policies must ALLOW (to verify no over-blocking)
+
+## Consumer repos
+
 Tagged releases dispatch `policies-updated` events to consumer repos, which open their own sync PRs:
 
-- **[vectimus/vectimus](https://github.com/vectimus/vectimus)** — Python package (cedarpy)
-- **[vectimus/openclaw](https://github.com/vectimus/openclaw)** — TypeScript plugin (cedar-wasm)
+- [vectimus/vectimus](https://github.com/vectimus/vectimus) (Python)
+- [vectimus/openclaw](https://github.com/vectimus/openclaw) (TypeScript)
+- [vectimus/sentinel](https://github.com/vectimus/sentinel) (Security pipeline)
 
 ## Repo structure
 
