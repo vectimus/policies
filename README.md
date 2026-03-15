@@ -1,70 +1,129 @@
 # Vectimus Policies
 
-Cedar policies for [Vectimus](https://github.com/vectimus/vectimus) -- the single source of truth for all AI agent governance rules.
+Cedar policies that govern what AI coding agents can and cannot do. Every rule traces back to a real attack.
 
-These policies are language-agnostic Cedar text files. They produce identical allow/deny decisions whether evaluated by cedarpy (Python), cedar-wasm (TypeScript) or any other conformant Cedar implementation.
+![Policies](https://img.shields.io/badge/packs-11-blue)
+![License](https://img.shields.io/badge/license-Apache%202.0-green)
+![CI](https://img.shields.io/github/actions/workflow/status/vectimus/policies/ci.yml?label=CI)
 
-## Structure
+## Policy packs
 
-Policies are organised by security domain. Each domain is an independent pack with its own `pack.toml` manifest.
+[Browse all policies on the web →](https://vectimus.com/policies)
+
+| Pack | What it blocks |
+|------|----------------|
+| `destructive-ops` | `rm -rf /`, `mkfs`, fork bombs, `chmod 777 /` |
+| `secrets` | Reading `.env`, credentials, API keys, private keys |
+| `supply-chain` | Lockfile tampering, rogue registries, `npm publish` without review |
+| `infrastructure` | `terraform destroy`, `kubectl delete`, IAM privilege escalation |
+| `code-execution` | Reverse shells, `eval()` chains, download-and-execute patterns |
+| `data-exfiltration` | Base64 piping to `curl`, DNS tunnelling, credential exfiltration |
+| `file-integrity` | Writes to CI configs, certs, `.claude/`, IDE settings, agent memory |
+| `database` | `DROP DATABASE`, ORM `--force` flags, migration destruction |
+| `git-safety` | `push --force`, `reset --hard`, `clean -f` |
+| `mcp-safety` | Unapproved MCP servers, parameter injection, tool impersonation |
+| `agent-governance` | Autonomous spawning, persistence, inter-agent comms, audit tampering |
+
+## Example policy
+
+Every rule has `@incident` (the real attack it prevents) and `@controls` (compliance framework mappings):
+
+```cedar
+@id("vectimus-destops-001")
+@description("Block recursive deletion of root, home or current directory")
+@incident("Home directory deletion via rm -rf reported in Claude Code sessions, 2025")
+@controls("SOC2-CC6.1, EU-AI-15, NIST-CSF-PR.DS-01, ISO27001-A.8.9")
+@suggested_alternative("Delete specific files or directories by name instead of using broad recursive deletion.")
+forbid (
+    principal,
+    action == Vectimus::Action::"shell_command",
+    resource
+) when {
+    context.command like "*rm -rf /*" ||
+    context.command like "*rm -rf ~*" ||
+    context.command like "*rm -rf .*"
+};
+```
+
+No best-practice filler. If there is no documented incident, there is no rule.
+
+## Compliance coverage
+
+These annotations exist so auditors can trace controls to enforcement. Evidence for your audit, not a compliance checkbox.
+
+| Framework | Prefix | Coverage |
+|-----------|--------|----------|
+| OWASP Agentic Top 10 | `OWASP-ASI` | 9 of 10 categories enforced |
+| SOC 2 Type II | `SOC2-` | CC6.1, CC6.6, CC6.8, CC7.2, CC7.3, CC8.1 |
+| NIST AI RMF | `NIST-AI-` | GOVERN 1.1/1.5, MAP 1.5, MEASURE 2.5/2.6, MANAGE 2.2/3.2 |
+| NIST CSF 2.0 | `NIST-CSF-` | PR.DS, PR.PS, DE.CM, RS.AN |
+| ISO 27001:2022 | `ISO27001-` | A.8 technology controls, A.5 organizational controls |
+| EU AI Act | `EU-AI-` | Articles 9, 12, 13, 14, 15 |
+| SLSA | `SLSA-` | L2 supply chain controls |
+| CIS Controls | `CIS-` | CIS-16 |
+
+## How policies are updated
+
+1. **Sentinel discovers a threat.** A 3-agent pipeline monitors attack disclosures, CVEs and community reports.
+2. **Sentinel writes a policy.** It generates Cedar, runs it through a sandbox prover and opens a PR to this repo.
+3. **Human reviews and merges.** Every policy PR gets human approval before it ships.
+4. **Auto-sync to local installs.** Vectimus checks for policy updates from the Vectimus API every 24 hours. No manual intervention needed.
+
+Tagged releases dispatch `policies-updated` events to consumer repos, which open their own sync PRs:
+
+- **[vectimus/vectimus](https://github.com/vectimus/vectimus)** — Python package (cedarpy)
+- **[vectimus/openclaw](https://github.com/vectimus/openclaw)** — TypeScript plugin (cedar-wasm)
+
+## Repo structure
 
 ```
-destructive-ops/         # Filesystem destruction, disk corruption, fork bombs
-secrets/                 # Credential, key and environment file protection
-supply-chain/            # Package publishing, lockfiles, registry configs, untrusted sources
-infrastructure/          # Cloud/container/IaC destruction, privilege escalation
-code-execution/          # Reverse shells, eval patterns, download-execute chains
-data-exfiltration/       # Encoded transfers, DNS tunnelling, credential piping
-file-integrity/          # CI/CD pipelines, certs, governance configs, agent instructions
-database/                # ORM destructive flags, DROP commands
-git-safety/              # Force push, reset --hard, clean -f
-mcp-safety/              # MCP server allowlisting, input parameter inspection
-agent-governance/        # Autonomy limits, spawn control, inter-agent comms, persistence
+<pack-name>/
+├── pack.toml              # Name, version, description
+├── <pack_name>.cedar      # One or more forbid/permit rules
 ```
 
-Each pack has a `pack.toml` manifest with name, version and description. Each `.cedar` file contains one or more rules with `@id`, `@description`, `@incident`, `@controls` and `@enforcement` annotations.
-
-## Compliance framework mappings
-
-Every rule carries `@controls` annotations mapping to one or more compliance frameworks. The pack structure organises by security domain; compliance frameworks are cross-cutting views.
-
-| Framework | Annotation prefix | Example |
-|-----------|------------------|---------|
-| SOC 2 Type II | `SOC2-` | `SOC2-CC6.1` |
-| NIST AI RMF | `NIST-` | `NIST-AI-MG-3.2` |
-| NIST CSF 2.0 | `NIST-CSF-` | `NIST-CSF-PR.DS-01` |
-| EU AI Act | `EU-AI-` | `EU-AI-14` |
-| OWASP Agentic Top 10 | `OWASP-ASI` | `OWASP-ASI01` |
-| ISO 27001:2022 | `ISO27001-` | `ISO27001-A.8.3` |
-| SLSA | `SLSA-` | `SLSA-L2` |
-| CIS Controls | `CIS-` | `CIS-16` |
-
-## Versioning
-
-This repo uses semantic versioning:
-
-- **Patch** (`v2.0.1`): rule tuning, false positive fixes, description changes
-- **Minor** (`v2.1.0`): new policies added, existing policies unchanged
-- **Major** (`v3.0.0`): policy removals, schema changes, behavioral changes to existing rules
-
-Tag a release whenever policies change. Consumer repos (vectimus/vectimus, vectimus/openclaw) receive automated PRs via repository dispatch.
-
-## Consumer repos
-
-When a new tag is pushed, a GitHub Action dispatches a `policies-updated` event to consumer repos. Each consumer has its own sync workflow that downloads the tagged policies and opens a PR.
-
-Current consumers:
-- [vectimus/vectimus](https://github.com/vectimus/vectimus) (Python)
-- [vectimus/openclaw](https://github.com/vectimus/openclaw) (TypeScript)
+Policies are language-agnostic Cedar text files. They produce identical allow/deny decisions whether evaluated by cedarpy, cedar-wasm or any other conformant Cedar implementation.
 
 ## Contributing
 
-1. Edit the relevant `.cedar` file
-2. Every rule must have an `@id`, `@description` and `@incident` annotation
-3. Run the full test suite in the consuming repos before tagging a release
-4. Update the CHANGELOG
-5. Tag and push
+### Policy format
+
+Every rule requires these annotations:
+
+- **`@id`** — Unique identifier following `vectimus-<pack>-<nnn>` pattern
+- **`@description`** — What the rule blocks, in plain English
+- **`@incident`** — The real-world attack or incident that motivated this rule
+- **`@controls`** — Comma-separated compliance framework mappings
+- **`@suggested_alternative`** — What the agent should do instead
+
+### Process
+
+1. **Add or edit** the relevant `.cedar` file in the appropriate pack directory
+2. **Include an `@incident` annotation.** No incident, no rule.
+3. **Map to compliance frameworks** via `@controls`. Check the table above for prefixes.
+4. **Run the test suite** in consumer repos (`vectimus/vectimus`, `vectimus/openclaw`) to verify evaluation
+5. **Update CHANGELOG.md** with your changes
+6. **Open a PR.** Tag it with the pack name.
+
+### Versioning
+
+This repo uses semantic versioning:
+
+- **Patch** (`v2.0.1`) — Rule tuning, false-positive fixes, description changes
+- **Minor** (`v2.1.0`) — New policies added, existing policies unchanged
+- **Major** (`v3.0.0`) — Policy removals, schema changes, behavioral changes to existing rules
+
+## Install Vectimus
+
+These policies are consumed by the main [Vectimus](https://github.com/vectimus/vectimus) package. To start enforcing them:
+
+```bash
+pipx install vectimus    # or: uv tool install vectimus
+vectimus init
+```
+
+Works with Claude Code, Cursor, GitHub Copilot and Gemini CLI via native hooks. See the [main repo](https://github.com/vectimus/vectimus) for setup.
 
 ## License
 
-Apache 2.0 -- same as the main Vectimus project.
+Apache 2.0
