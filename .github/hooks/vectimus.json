@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "/Users/jholland/Development/vectimus/vectimus/.venv/bin/vectimus hook --source copilot"
+      }
+    ]
+  }
+}
