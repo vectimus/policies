@@ -1,18 +1,63 @@
 {
   "name": "vectimus-policies",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "packs": {
-    "base": {
-      "path": "base/",
-      "policies": 9,
-      "rules": 52
+    "agent-governance": {
+      "path": "agent-governance/",
+      "policies": 14,
+      "rules": 47
     },
-    "owasp-agentic": {
-      "path": "owasp-agentic/",
-      "policies": 9,
-      "rules": 29
+    "code-execution": {
+      "path": "code-execution/",
+      "policies": 5,
+      "rules": 76
+    },
+    "data-exfiltration": {
+      "path": "data-exfiltration/",
+      "policies": 3,
+      "rules": 26
+    },
+    "database": {
+      "path": "database/",
+      "policies": 8,
+      "rules": 25
+    },
+    "destructive-ops": {
+      "path": "destructive-ops/",
+      "policies": 6,
+      "rules": 26
+    },
+    "file-integrity": {
+      "path": "file-integrity/",
+      "policies": 12,
+      "rules": 54
+    },
+    "git-safety": {
+      "path": "git-safety/",
+      "policies": 3,
+      "rules": 8
+    },
+    "infrastructure": {
+      "path": "infrastructure/",
+      "policies": 8,
+      "rules": 22
+    },
+    "mcp-safety": {
+      "path": "mcp-safety/",
+      "policies": 7,
+      "rules": 42
+    },
+    "secrets": {
+      "path": "secrets/",
+      "policies": 4,
+      "rules": 22
+    },
+    "supply-chain": {
+      "path": "supply-chain/",
+      "policies": 8,
+      "rules": 21
     }
   },
-  "total_policies": 18,
-  "total_rules": 81
+  "total_policies": 78,
+  "total_rules": 369
 }
