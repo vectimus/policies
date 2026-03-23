@@ -1,0 +1,11 @@
+{
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"mcp_tool\"",
+  "resource": "Vectimus::Tool::\"approved_mcp_tool\"",
+  "context": {
+    "mcp_server_install_source": "npm:@modelcontextprotocol/server-github",
+    "mcp_tool": "read_file",
+    "approved": true
+  },
+  "expected": "ALLOW"
+}
