@@ -158,3 +158,39 @@ forbid (
     context.file_path like "*.cursor/hooks.json" ||
     context.file_path like "*.vectimus/*"
 };
+
+
+// ---------------------------------------------------------------------------
+// IDE deeplink installation trust boundary (CursorJack)
+// ---------------------------------------------------------------------------
+
+// vectimus-mcp-008
+// VTMS-2026-0033 | OWASP: ASI09 | SOC2-CC6.1 | NIST-AI-GV-6.2 | EU-AI-14
+// @controls OWASP-ASI09, SOC2-CC6.1, NIST-AI-GV-6.2, EU-AI-14, NIST-CSF-PR.AA-05, ISO27001-A.5.15
+// CursorJack (Jan 2026): cursor:// deeplinks install malicious MCP servers via
+// one social-engineering click.  The installation fires through the IDE UI layer
+// before Vectimus hooks are fully registered, creating a pre-consent gap.
+// Even once the server is installed, Vectimus must not allow tool calls from it
+// until the server has been explicitly policy-approved.
+// Runtime requirement: Vectimus MUST populate context.mcp_server_install_source
+// (e.g. "cursor://anysphere.cursor-deeplink/mcp/install?...") and context.approved
+// (bool) for every mcp_tool evaluation.
+@id("vectimus-mcp-008")
+@description("Block tool calls from MCP servers installed via IDE deeplink protocol handlers unless explicitly approved")
+@incident("VTMS-2026-0033: CursorJack — cursor:// deeplink MCP install bypasses pre-consent; installed server must not execute tool calls without explicit approval")
+@controls("OWASP-ASI09, SOC2-CC6.1, NIST-AI-GV-6.2, EU-AI-14, NIST-CSF-PR.AA-05, ISO27001-A.5.15")
+@suggested_alternative("Explicitly allowlist the server with: vectimus mcp allow <server-name>. Never install MCP servers via cursor://, vscode://, or other IDE deeplinks from untrusted sources.")
+forbid (
+    principal,
+    action == Vectimus::Action::"mcp_tool",
+    resource
+)
+when {
+    context.mcp_server_install_source like "cursor://*" ||
+    context.mcp_server_install_source like "vscode://*" ||
+    context.mcp_server_install_source like "*-deeplink*" ||
+    context.mcp_server_install_source like "*deeplink*"
+}
+unless {
+    context.approved
+};
