@@ -1,0 +1,17 @@
+[
+  {
+    "uid": { "type": "Vectimus::Agent", "id": "coding_agent" },
+    "attrs": { "name": "coding_agent", "framework": "cursor" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "export_pythonwarnings" },
+    "attrs": { "command": "export PYTHONWARNINGS=ignore::DeprecationWarning:antigravity" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "python3_run" },
+    "attrs": { "command": "python3 script.py" },
+    "parents": []
+  }
+]
