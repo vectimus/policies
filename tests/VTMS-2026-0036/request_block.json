@@ -1,0 +1,9 @@
+{
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"export_pythonwarnings\"",
+  "context": {
+    "command": "export PYTHONWARNINGS=ignore::DeprecationWarning:antigravity"
+  },
+  "expected": "DENY"
+}
