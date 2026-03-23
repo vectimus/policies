@@ -10,6 +10,9 @@ on:
       - '**/pack.toml'
       - 'VERSION'
 
+permissions:
+  contents: read
+
 jobs:
   sync:
     runs-on: ubuntu-latest
