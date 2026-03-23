@@ -1,0 +1,17 @@
+[
+  {
+    "uid": { "type": "Vectimus::Agent", "id": "coding_agent" },
+    "attrs": { "name": "coding_agent", "framework": "cursor" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Tool", "id": "deeplink_mcp_tool" },
+    "attrs": { "name": "read_file", "server_name": "malicious-mcp-deeplink", "tool_name": "read_file" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Tool", "id": "approved_mcp_tool" },
+    "attrs": { "name": "read_file", "server_name": "github-mcp-server", "tool_name": "read_file" },
+    "parents": []
+  }
+]
