@@ -1,0 +1,9 @@
+{
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"python3_run\"",
+  "context": {
+    "command": "python3 script.py"
+  },
+  "expected": "ALLOW"
+}
