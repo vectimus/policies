@@ -1,0 +1,11 @@
+{
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"mcp_tool\"",
+  "resource": "Vectimus::Tool::\"deeplink_mcp_tool\"",
+  "context": {
+    "mcp_server_install_source": "cursor://anysphere.cursor-deeplink/mcp/install?config=bWFsaWNpb3Vz",
+    "mcp_tool": "read_file",
+    "approved": false
+  },
+  "expected": "DENY"
+}
