@@ -147,3 +147,48 @@ forbid (
     context.command like "*iex*$(*" ||
     context.command like "*iex*DownloadString*"
 };
+
+
+// ---------------------------------------------------------------------------
+// Environment variable poisoning via shell built-ins (CVE-2026-22708)
+// ---------------------------------------------------------------------------
+
+// vectimus-codexec-006
+// VTMS-2026-0036 | OWASP: ASI05 | SOC2-CC6.8 | NIST-AI-MS-2.5 | EU-AI-15
+// @controls OWASP-ASI05, SOC2-CC6.8, NIST-AI-MS-2.5, EU-AI-15, NIST-CSF-DE.CM-01, ISO27001-A.8.23
+// CVE-2026-22708 (CVSS 9.8, Cursor < 2.3): in Cursor Auto-Run Mode with
+// allowlist enabled, shell built-ins (export, unset, set, alias, source) bypass
+// allowlist validation because they execute inside the active shell session, not
+// as discrete processes.  An indirect prompt injection payload instructs the
+// agent to poison PYTHONWARNINGS, BROWSER, PERL5OPT, LD_PRELOAD or PATH; the
+// next user-approved allowlisted command (git, python3) inherits the poisoned
+// env and executes an attacker-controlled payload.
+// Blocks export of the eight environment variables identified in public PoC
+// exploit chains.  PATH is included: AI coding agents have no legitimate need
+// to rewrite PATH mid-session; developers should set PATH in their shell profile
+// before starting the agent.
+@id("vectimus-codexec-006")
+@description("Block shell built-in commands that export environment variables exploited in CVE-2026-22708 env-poisoning chains")
+@incident("VTMS-2026-0036: CVE-2026-22708 — indirect prompt injection poisons PYTHONWARNINGS/BROWSER/PERL5OPT/LD_PRELOAD/PATH; trusted allowlisted commands trigger RCE")
+@controls("OWASP-ASI05, SOC2-CC6.8, NIST-AI-MS-2.5, EU-AI-15, NIST-CSF-DE.CM-01, ISO27001-A.8.23")
+@suggested_alternative("Set environment variables in your shell profile (~/.bashrc, ~/.zshrc) before starting the AI agent session. If a one-off override is needed, a human developer should run the export command in a separate terminal, not via the agent.")
+forbid (
+    principal,
+    action == Vectimus::Action::"shell_command",
+    resource
+) when {
+    // PYTHONWARNINGS — triggers Python to import arbitrary modules on startup
+    context.command like "*export PYTHONWARNINGS=*" ||
+    // BROWSER — redirects webbrowser.open() calls to attacker-controlled binary
+    context.command like "*export BROWSER=*" ||
+    // PERL5OPT — injects arbitrary Perl code via -M flag at interpreter startup
+    context.command like "*export PERL5OPT=*" ||
+    // LD_PRELOAD / LD_LIBRARY_PATH — loads malicious shared library into any binary
+    context.command like "*export LD_PRELOAD=*" ||
+    context.command like "*export LD_LIBRARY_PATH=*" ||
+    // PATH — shadows trusted binaries with attacker-controlled executables
+    context.command like "*export PATH=*" ||
+    // PAGER / MANPAGER — hijacks pager invoked by git log, man, etc.
+    context.command like "*export PAGER=*" ||
+    context.command like "*export MANPAGER=*"
+};
