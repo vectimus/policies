@@ -72,3 +72,52 @@ forbid (
     context.command like "*Get-Content*SAM*|*Invoke-WebRequest*" ||
     context.command like "*Get-Content*SYSTEM*|*Invoke-RestMethod*"
 };
+
+// vectimus-exfil-004
+// VTMS-2026-0011 | OWASP: ASI04 | SOC2-CC6.6 | NIST-AI-GV-1.3 | EU-AI-15
+// @controls OWASP-ASI04, OWASP-ASI01, SOC2-CC6.6, NIST-AI-GV-1.3, EU-AI-15, NIST-CSF-PR.DS-02, ISO27001-A.8.23
+// ContextCrush (2026-03-05): poisoned Context7 MCP documentation caused agents to POST
+// .env credentials to attacker-controlled GitHub repos via curl issue creation.
+// Closes the shell_command exfiltration gap left by the web_request-scoped EXAG-001.
+// Blocks curl/wget/PowerShell commands that transmit .env or credential file contents
+// via shell substitution, @ file-upload syntax, or pipe to an outbound HTTP request.
+@id("vectimus-exfil-004")
+@description("Block curl/wget/PowerShell POST commands that transmit .env credential file contents to external endpoints")
+@incident("VTMS-2026-0011: ContextCrush — Context7 MCP documentation poisoning, 2026-03-05")
+@controls("OWASP-ASI04, OWASP-ASI01, SOC2-CC6.6, NIST-AI-GV-1.3, EU-AI-15, NIST-CSF-PR.DS-02, ISO27001-A.8.23")
+@suggested_alternative("To transmit configuration data to an external service, request human approval and supply credentials via a secrets manager — never read credential files directly inside a shell command.")
+forbid (
+    principal,
+    action == Vectimus::Action::"shell_command",
+    resource
+) when {
+    // curl: shell substitution reading .env content inline (e.g. --data "$(cat .env)")
+    context.command like "*curl*$(cat*.env*" ||
+    context.command like "*curl*$(cat *env*" ||
+    // curl: @ file-upload syntax pointing at a .env file (e.g. --data @.env, -d @.env)
+    context.command like "*curl*--data*@*.env*" ||
+    context.command like "*curl* -d *@*.env*" ||
+    context.command like "*curl*--data-binary*@*.env*" ||
+    context.command like "*curl*--data-urlencode*@*.env*" ||
+    // curl: .env piped directly into curl (e.g. cat .env | curl -X POST ...)
+    context.command like "*cat*.env*|*curl*" ||
+    context.command like "*cat *env*|*curl*" ||
+    // wget: shell substitution reading .env content (e.g. --post-data="$(cat .env)")
+    context.command like "*wget*--post-data*$(cat*.env*" ||
+    context.command like "*wget*--post-data*$(cat *env*" ||
+    // wget: --post-file pointing at a .env file
+    context.command like "*wget*--post-file=*.env*" ||
+    context.command like "*wget*--post-file *.env*" ||
+    // wget: .env piped into wget POST
+    context.command like "*cat*.env*|*wget*--post*" ||
+    context.command like "*cat *env*|*wget*--post*" ||
+    // PowerShell: Get-Content of .env piped to web request cmdlets
+    context.command like "*Get-Content*.env*|*Invoke-WebRequest*" ||
+    context.command like "*Get-Content*.env*|*Invoke-RestMethod*" ||
+    context.command like "*Get-Content *env*|*Invoke-WebRequest*" ||
+    context.command like "*Get-Content *env*|*Invoke-RestMethod*"
+};
+// Override: approved workflows that must transmit environment data should use a secrets
+// manager integration (e.g. AWS Secrets Manager, HashiCorp Vault) with explicit
+// per-secret injection rather than reading credential files in shell commands.
+// Add the specific approved command pattern to context.allowed_exfil_commands.

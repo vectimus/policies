@@ -1,0 +1,9 @@
+{
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"curl_post_safe\"",
+  "context": {
+    "command": "curl -X POST https://api.example.com/webhook -H \"Content-Type: application/json\" -d '{\"event\":\"deploy\",\"status\":\"success\"}'"
+  },
+  "expected": "ALLOW"
+}

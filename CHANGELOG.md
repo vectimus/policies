@@ -5,6 +5,12 @@ All notable changes to Vectimus policies will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-03-26
+
+### Added
+
+- vectimus-exfil-004: Block curl/wget/PowerShell POST commands that transmit .env credential file contents via shell substitution, @ file-upload syntax, or pipe to external endpoints (VTMS-2026-0011)
+
 ## [2.0.0] - 2026-03-15
 
 ### Changed
