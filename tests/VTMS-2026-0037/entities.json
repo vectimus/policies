@@ -1,0 +1,37 @@
+[
+  {
+    "uid": { "type": "Agent", "id": "coding_agent" },
+    "attrs": { "name": "coding_agent", "framework": "claude-code" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Resource", "id": "gh_auth_token_cmd" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Resource", "id": "gh_api_post_cmd" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Resource", "id": "gh_issue_create_env_cmd" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Resource", "id": "gh_gist_create_home_cmd" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Resource", "id": "gh_pr_list_cmd" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Resource", "id": "gh_issue_create_plain_cmd" },
+    "attrs": {},
+    "parents": []
+  }
+]

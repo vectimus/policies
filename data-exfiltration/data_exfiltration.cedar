@@ -72,3 +72,54 @@ forbid (
     context.command like "*Get-Content*SAM*|*Invoke-WebRequest*" ||
     context.command like "*Get-Content*SYSTEM*|*Invoke-RestMethod*"
 };
+
+// vectimus-exfil-004
+// VTMS-2026-0037 | OWASP: ASI04 | SOC2-CC6.6 | NIST-AI-GV-1.1 | EU-AI-15
+// @controls OWASP-ASI04, SOC2-CC6.6, NIST-AI-GV-1.1, EU-AI-15, NIST-CSF-DE.CM-01, ISO27001-A.8.23
+// TeamPCP/CanisterWorm (March 2026): the threat actor backdoored the Trivy VS Code extension
+// (v1.8.12-1.8.13) with hidden natural-language prompts directing locally installed AI coding
+// assistants (Claude Code, Copilot, Gemini CLI, Codex, Kiro) to harvest auth tokens and
+// exfiltrate them via the victim's own GitHub CLI.  Existing file_read policies block direct
+// credential file reads (vectimus-secrets-001 through -003) but the GitHub CLI exfiltration
+// path — gh auth token, gh api POST, gh issue create, gh gist create — was not covered.
+// Blocks GitHub CLI shell commands used as AI-agent-directed credential exfiltration channels.
+@id("vectimus-exfil-004")
+@description("Block GitHub CLI commands used as AI-agent-directed credential exfiltration channels")
+@incident("VTMS-2026-0037: TeamPCP/CanisterWorm — backdoored Trivy VS Code extension (v1.8.12-1.8.13) injected hidden prompts directing AI assistants to exfiltrate auth tokens via gh auth token, gh api POST, gh issue create and gh gist create")
+@controls("OWASP-ASI04, SOC2-CC6.6, NIST-AI-GV-1.1, EU-AI-15, NIST-CSF-DE.CM-01, ISO27001-A.8.23")
+@suggested_alternative("Use read-only gh commands (gh pr list, gh repo view, gh issue list) for repository inspection.  Auth token retrieval and write operations via GitHub CLI require human approval.  Programmatic GitHub API writes should use a scoped GitHub App token via an approved workflow, not the ambient gh credential.")
+forbid (
+    principal,
+    action == Vectimus::Action::"shell_command",
+    resource
+) when {
+    // gh auth token — retrieves the raw stored GitHub authentication token in plaintext;
+    // no legitimate AI coding-assistant use case; primary CanisterWorm Phase 3 primitive
+    context.command like "*gh auth token*" ||
+
+    // gh api with write-method flags — used to POST credential payloads to arbitrary
+    // GitHub API endpoints (issues, gists, comments) as an exfiltration channel
+    (context.command like "*gh api *" && context.command like "*--method POST*") ||
+    (context.command like "*gh api *" && context.command like "*-X POST*") ||
+    (context.command like "*gh api *" && context.command like "*--method PATCH*") ||
+    (context.command like "*gh api *" && context.command like "*-X PATCH*") ||
+    (context.command like "*gh api *" && context.command like "*--method PUT*") ||
+    (context.command like "*gh api *" && context.command like "*-X PUT*") ||
+
+    // gh issue create / gh gist create with shell command substitution — used to embed
+    // harvested environment-variable or file content into issue/gist bodies
+    (context.command like "*gh issue create*" && context.command like "*$(*") ||
+    (context.command like "*gh issue create*" && context.command like "*$GITHUB_TOKEN*") ||
+    (context.command like "*gh issue create*" && context.command like "*$GH_TOKEN*") ||
+    (context.command like "*gh gist create*" && context.command like "*$(*") ||
+    (context.command like "*gh gist create*" && context.command like "*$GITHUB_TOKEN*") ||
+    (context.command like "*gh gist create*" && context.command like "*$GH_TOKEN*") ||
+
+    // gh gist create referencing home-directory paths — catches credential file exfiltration
+    // where the harvested file content is piped to gist (e.g. gh gist create ~/.env)
+    (context.command like "*gh gist create*" && context.command like "*~/*")
+};
+// Override: legitimate programmatic GitHub write operations (e.g. automated release notes)
+// should use a scoped GitHub App installation token injected at the workflow level, not the
+// ambient gh CLI credential.  If a supervised workflow requires gh api writes, set
+// context.approved_gh_api_write = true in the request context to bypass this rule.

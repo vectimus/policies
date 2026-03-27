@@ -1,0 +1,8 @@
+{
+  "principal": "Agent::\"coding_agent\"",
+  "action": "Action::\"shell_command\"",
+  "resource": "Resource::\"gh_pr_list_cmd\"",
+  "context": { "command": "gh pr list --state open" },
+  "expected": "ALLOW",
+  "description": "False-positive check: legitimate read-only gh pr list command must not be blocked by vectimus-exfil-004"
+}
