@@ -48,7 +48,7 @@ forbid (
 };
 ```
 
-No best-practice filler. If there is no documented incident, there is no rule.
+Every rule traces to a real incident, published CVE, or compliance framework requirement. No filler.
 
 ## Compliance coverage
 
