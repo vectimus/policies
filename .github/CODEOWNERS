@@ -1,0 +1,8 @@
+# Default owners — all policy changes require security review
+* @vectimus/security
+
+# Cedar policies
+/policies/ @vectimus/security
+
+# Sync and notification infrastructure
+/.github/ @vectimus/security
