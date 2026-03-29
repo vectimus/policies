@@ -1,0 +1,74 @@
+{
+  "version": "2.1.0",
+  "generated_at": "2026-03-29T00:00:00Z",
+  "policy_count": 79,
+  "pack_count": 11,
+  "packs": [
+    {
+      "pack": "agentgov",
+      "directory": "agent-governance",
+      "file": "agent_governance.cedar",
+      "rule_count": 14
+    },
+    {
+      "pack": "codexec",
+      "directory": "code-execution",
+      "file": "code_execution.cedar",
+      "rule_count": 5
+    },
+    {
+      "pack": "exfil",
+      "directory": "data-exfiltration",
+      "file": "data_exfiltration.cedar",
+      "rule_count": 3
+    },
+    {
+      "pack": "db",
+      "directory": "database",
+      "file": "database.cedar",
+      "rule_count": 8
+    },
+    {
+      "pack": "destops",
+      "directory": "destructive-ops",
+      "file": "destructive_ops.cedar",
+      "rule_count": 6
+    },
+    {
+      "pack": "fileint",
+      "directory": "file-integrity",
+      "file": "file_integrity.cedar",
+      "rule_count": 13
+    },
+    {
+      "pack": "git",
+      "directory": "git-safety",
+      "file": "git_safety.cedar",
+      "rule_count": 3
+    },
+    {
+      "pack": "infra",
+      "directory": "infrastructure",
+      "file": "infrastructure.cedar",
+      "rule_count": 8
+    },
+    {
+      "pack": "mcp",
+      "directory": "mcp-safety",
+      "file": "mcp_safety.cedar",
+      "rule_count": 7
+    },
+    {
+      "pack": "secrets",
+      "directory": "secrets",
+      "file": "secrets.cedar",
+      "rule_count": 4
+    },
+    {
+      "pack": "supchain",
+      "directory": "supply-chain",
+      "file": "supply_chain.cedar",
+      "rule_count": 8
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "description": "Legitimate write to project config — not an AI assistant config directory",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"file_write\"",
+  "resource": "Vectimus::Resource::\"project_config\"",
+  "context": {
+    "file_path": "/home/user/projects/myapp/src/config.json"
+  },
+  "expected": "ALLOW (implicit — no explicit forbid from vectimus-fileint-013)"
+}
