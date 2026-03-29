@@ -1,0 +1,27 @@
+[
+  {
+    "uid": { "type": "Vectimus::Agent", "id": "coding_agent" },
+    "attrs": { "name": "coding_agent", "framework": "claude-code" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "claude_desktop_config" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "cursor_ai_config" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "windsurf_config" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "project_config" },
+    "attrs": {},
+    "parents": []
+  }
+]
