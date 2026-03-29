@@ -1,0 +1,27 @@
+[
+  {
+    "uid": { "type": "Vectimus::Agent", "id": "coding_agent" },
+    "attrs": { "name": "coding_agent", "framework": "cursor" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "cursor_settings_write" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "idea_workspace_write" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "codeworkspace_write" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "benign_src_write" },
+    "attrs": {},
+    "parents": []
+  }
+]

@@ -5,6 +5,14 @@ All notable changes to Vectimus policies will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-03-29
+
+### Added
+
+- vectimus-fileint-013: Block agent-initiated `file_write` to IDE workspace configuration paths that weaponise task runners and debugger launchers — IDEsaster attack chain (VTMS-2026-0047, CVE-2025-54130, CVE-2025-53536, CVE-2025-55012, CVE-2025-64660, CVE-2025-61590, CVE-2025-58372, AWS-2025-019)
+  - Covers: `.cursor/settings.json`, `.idea/workspace.xml`, `.idea/*.xml`, `*.code-workspace`, `*mcp_settings.json`, `.gemini/settings.json`, `.vscode/*.json` (broad catch-all)
+  - Complements existing fileint-004/007/008 coverage of `.vscode/settings.json`, `.vscode/tasks.json`, `.vscode/launch.json`, `.vscode/extensions.json`, `.cursor/hooks.json`, `.cursor/mcp.json`
+
 ## [2.0.0] - 2026-03-15
 
 ### Changed

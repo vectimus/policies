@@ -1,0 +1,9 @@
+{
+  "description": "Legitimate: agent writes a source file — must not be blocked",
+  "vtms_id": "VTMS-2026-0047",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"file_write\"",
+  "resource": "Vectimus::Resource::\"benign_src_write\"",
+  "context": { "file_path": "/workspace/src/utils.js" },
+  "expected": "ALLOW"
+}

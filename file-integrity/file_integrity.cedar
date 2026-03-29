@@ -223,3 +223,53 @@ forbid (
     context.file_path like "*.claude/memory*" ||
     context.file_path like "*.cursor/memory*"
 };
+
+// ---------------------------------------------------------------------------
+// IDE workspace configuration — IDEsaster attack chain
+// ---------------------------------------------------------------------------
+
+// vectimus-fileint-013
+// VTMS-2026-0047 | OWASP: ASI01 | SOC2-CC6.1 | NIST-AI-GV-4.1 | EU-AI-14
+// @controls OWASP-ASI01, SOC2-CC6.1, NIST-AI-GV-4.1, EU-AI-14, ISO27001-A.8.9
+// IDEsaster (CVE-2025-54130, CVE-2025-53536, CVE-2025-55012, CVE-2025-64660,
+// CVE-2025-61590, CVE-2025-58372 and 18 additional CVEs; AWS-2025-019):
+// indirect prompt injection drives agent file_write to IDE workspace config
+// files; IDE auto-processes them on load, triggering RCE via task runners or
+// debugger launchers.  Covers gaps not addressed by fileint-004/007/008:
+// .cursor/settings.json, .idea/*.xml, *.code-workspace, mcp_settings.json,
+// .gemini/settings.json, and the broad .vscode/*.json wildcard.
+@id("vectimus-fileint-013")
+@description("Block agent writes to IDE workspace config files that weaponise task runners and debugger launchers (IDEsaster)")
+@incident("IDEsaster: prompt injection -> file_write to IDE workspace config -> auto-RCE on IDE load, CVE-2025-54130 et al., December 2025")
+@controls("OWASP-ASI01, SOC2-CC6.1, NIST-AI-GV-4.1, EU-AI-14, ISO27001-A.8.9")
+@suggested_alternative("IDE workspace configuration must be authored by a human developer. To scaffold .vscode or .idea configs during project initialisation, add a narrow permit policy scoped to the specific principal, target path, and context.ide_config_write_approved = true.")
+forbid (
+    principal,
+    action == Vectimus::Action::"file_write",
+    resource
+) when {
+    // Cursor IDE main settings — configures task runners, terminal path, and
+    // debugger launchers.  (.cursor/hooks.json and .cursor/mcp.json are already
+    // covered by fileint-004 and fileint-008 respectively.)
+    context.file_path like "*/.cursor/settings.json" ||
+    // JetBrains IDEs (IntelliJ IDEA, PyCharm, WebStorm, Rider, GoLand, etc.)
+    // workspace.xml stores run/debug configurations executed automatically on
+    // project open; any *.xml in .idea/ may encode launch configurations.
+    context.file_path like "*/.idea/workspace.xml" ||
+    context.file_path like "*/.idea/*.xml" ||
+    // VS Code multi-root workspace files — can include additional trusted
+    // folder roots pointing to attacker-controlled content, loaded automatically
+    // on workspace open.  (CVE-2025-64660, CVE-2025-61590, CVE-2025-58372)
+    context.file_path like "*.code-workspace" ||
+    // Windsurf and other AI IDEs that use mcp_settings.json for tool
+    // registration.  (*/mcp.json and *mcp_config* already covered by fileint-008)
+    context.file_path like "*mcp_settings.json" ||
+    // Gemini CLI workspace settings — executed by IDE internals on load.
+    context.file_path like "*/.gemini/settings.json" ||
+    // Broad .vscode/*.json catch-all: any workspace-scoped JSON in .vscode/
+    // directory.  Specific high-risk files (settings.json, tasks.json,
+    // launch.json, extensions.json) are individually covered by fileint-004
+    // and fileint-007; this adds belt-and-suspenders breadth coverage for
+    // any additional workspace config files the IDE may process.
+    context.file_path like "*/.vscode/*.json"
+};

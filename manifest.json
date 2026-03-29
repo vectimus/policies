@@ -1,0 +1,84 @@
+{
+  "version": "2.1.0",
+  "generated_at": "2026-03-29T00:00:00Z",
+  "total_policies": 79,
+  "packs": [
+    {
+      "name": "agent-governance",
+      "code": "agentgov",
+      "file": "agent-governance/agent_governance.cedar",
+      "policy_count": 14,
+      "description": "Permission bypass, inter-agent comms, cascading failures, audit"
+    },
+    {
+      "name": "code-execution",
+      "code": "codexec",
+      "file": "code-execution/code_execution.cedar",
+      "policy_count": 5,
+      "description": "curl|sh, reverse shells, python -c network, eval/exec"
+    },
+    {
+      "name": "data-exfiltration",
+      "code": "exfil",
+      "file": "data-exfiltration/data_exfiltration.cedar",
+      "policy_count": 3,
+      "description": "base64 exfil, DNS tunneling, credential piping"
+    },
+    {
+      "name": "database",
+      "code": "db",
+      "file": "database/database.cedar",
+      "policy_count": 8,
+      "description": "ORM destructive flags, DROP commands"
+    },
+    {
+      "name": "destructive-ops",
+      "code": "destops",
+      "file": "destructive-ops/destructive_ops.cedar",
+      "policy_count": 6,
+      "description": "rm -rf, disk destruction, fork bombs, governance bypass"
+    },
+    {
+      "name": "file-integrity",
+      "code": "fileint",
+      "file": "file-integrity/file_integrity.cedar",
+      "policy_count": 13,
+      "description": "CI/CD pipelines, certs, governance configs, agent instructions, IDE workspace configs"
+    },
+    {
+      "name": "git-safety",
+      "code": "git",
+      "file": "git-safety/git_safety.cedar",
+      "policy_count": 3,
+      "description": "force push, reset --hard, clean -f"
+    },
+    {
+      "name": "infrastructure",
+      "code": "infra",
+      "file": "infrastructure/infrastructure.cedar",
+      "policy_count": 8,
+      "description": "terraform, kubectl, cloud CLI, docker, privilege escalation"
+    },
+    {
+      "name": "mcp-safety",
+      "code": "mcp",
+      "file": "mcp-safety/mcp_safety.cedar",
+      "policy_count": 7,
+      "description": "server allowlisting, tool input inspection"
+    },
+    {
+      "name": "secrets",
+      "code": "secrets",
+      "file": "secrets/secrets.cedar",
+      "policy_count": 4,
+      "description": ".env reads, key files, credentials, token access"
+    },
+    {
+      "name": "supply-chain",
+      "code": "supchain",
+      "file": "supply-chain/supply_chain.cedar",
+      "policy_count": 8,
+      "description": "npm publish, pip upload, registry configs, lockfiles"
+    }
+  ]
+}
