@@ -118,3 +118,41 @@ forbid (
 ) when {
     context.command like "*git submodule add*"
 };
+
+// vectimus-supchain-009
+// VTMS-2026-0041 | OWASP: ASI05 | SOC2-CC6.8 | NIST-AI-MG-3.2 | EU-AI-15
+// @controls OWASP-ASI05, SOC2-CC6.8, NIST-AI-MG-3.2, EU-AI-15, SLSA-L2, ISO27001-A.8.25
+// PraisonAI triple-CVE cluster (2026-04-08): sandbox escape CVE-2026-39888 (CVSS 9.9),
+// YAML RCE CVE-2026-39890 (CVSS 9.8), template injection CVE-2026-39891 (CVSS 8.8).
+// All three patched in praisonaiagents >= 1.5.115 / praisonai >= 4.5.115.
+// Runtime exploit paths execute inside PraisonAI framework internals and cannot be
+// intercepted at Vectimus tool-call time; blocking vulnerable package installation
+// is the only complete enforcement lever available.
+@id("vectimus-supchain-009")
+@description("Block pip install of praisonai or praisonaiagents pinned with == to any explicit version — Cedar cannot express version arithmetic so all pre-patch exact pins are vulnerable (CVE-2026-39888 CVSS 9.9 / CVE-2026-39890 CVSS 9.8 / CVE-2026-39891 CVSS 8.8)")
+@incident("VTMS-2026-0041: PraisonAI triple-CVE cluster 2026-04-08 — sandbox escape, YAML RCE, template injection; patched in praisonaiagents >= 1.5.115 / praisonai >= 4.5.115")
+@controls("OWASP-ASI05, SOC2-CC6.8, NIST-AI-MG-3.2, EU-AI-15, SLSA-L2, ISO27001-A.8.25")
+@suggested_alternative("pip install 'praisonai>=4.5.115' or pip install 'praisonaiagents>=1.5.115'. Unversioned pip install praisonai is also safe (resolves to the latest patched release). For reproducible pinning use 'praisonai>=4.5.115,<5.0.0' rather than an exact == specifier.")
+forbid (
+    principal,
+    action in [Vectimus::Action::"package_operation", Vectimus::Action::"shell_command"],
+    resource
+) when {
+    // Block any explicit == pin of praisonaiagents; all versions below 1.5.115 are
+    // vulnerable to CVE-2026-39888 (sandbox escape via exception frame traversal in
+    // execute_code()).  Cedar cannot express version arithmetic so all == pins are
+    // blocked.  Safe alternative: pip install 'praisonaiagents>=1.5.115'
+    context.command like "*pip install*praisonaiagents==*" ||
+    // Block any explicit == pin of praisonai; all versions below 4.5.115 are
+    // vulnerable to CVE-2026-39890 (unsafe YAML deserialisation RCE) and
+    // CVE-2026-39891 (template injection → OS command execution).
+    // NOTE: "*praisonai==*" does NOT match "praisonaiagents==" — the discriminating
+    // token is "praisonai==" vs "praisonaiagents=="; the latter contains "praisonai"
+    // but never the exact substring "praisonai==".
+    // Safe alternative: pip install 'praisonai>=4.5.115'
+    context.command like "*pip install*praisonai==*"
+};
+// Override: unversioned installs (pip install praisonai) and >= range pins
+// (pip install 'praisonai>=4.5.115') are explicitly not blocked by this rule.
+// Exact == pins to a confirmed-safe version require a Vectimus policy exception
+// with human approval, or substitute the equivalent range constraint (>=X.Y.Z,<NEXT_MAJOR).

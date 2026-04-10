@@ -1,0 +1,10 @@
+{
+  "description": "Legitimate unversioned install — resolves to latest patched release, no == specifier present",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"package_operation\"",
+  "resource": "Vectimus::Resource::\"praisonai_unversioned\"",
+  "context": {
+    "command": "pip install praisonai"
+  },
+  "expected": "ALLOW (implicit — no forbid from vectimus-supchain-009)"
+}

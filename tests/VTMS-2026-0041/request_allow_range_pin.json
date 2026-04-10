@@ -1,0 +1,10 @@
+{
+  "description": "Legitimate >= range pin to patched version — no == specifier present, safe alternative recommended by policy",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"package_operation\"",
+  "resource": "Vectimus::Resource::\"praisonaiagents_range_pin\"",
+  "context": {
+    "command": "pip install 'praisonaiagents>=1.5.115'"
+  },
+  "expected": "ALLOW (implicit — no forbid from vectimus-supchain-009)"
+}

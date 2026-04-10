@@ -1,0 +1,27 @@
+[
+  {
+    "uid": { "type": "Vectimus::Agent", "id": "coding_agent" },
+    "attrs": { "name": "coding_agent", "framework": "praisonai" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "praisonaiagents_vuln_pin" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "praisonai_vuln_pin" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "praisonai_unversioned" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "praisonaiagents_range_pin" },
+    "attrs": {},
+    "parents": []
+  }
+]

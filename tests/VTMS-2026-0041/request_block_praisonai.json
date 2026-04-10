@@ -1,0 +1,10 @@
+{
+  "description": "CVE-2026-39890/39891: agent pins praisonai to vulnerable 4.x pre-patch version via shell_command (YAML RCE CVSS 9.8 + template injection CVSS 8.8)",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"praisonai_vuln_pin\"",
+  "context": {
+    "command": "pip install praisonai==4.0.25"
+  },
+  "expected": "DENY"
+}
