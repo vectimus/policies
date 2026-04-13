@@ -1,12 +1,12 @@
 # Vectimus Policies
 
-**11 packs  |  78 policies  |  369 rules**
+**11 packs  |  79 policies  |  380 rules**
 
 Cedar policies that govern what AI coding agents can and cannot do.  Every rule traces back to a real incident, published vulnerability or security framework scenario.
 
 ![Packs](https://img.shields.io/badge/packs-11-blue)
-![Policies](https://img.shields.io/badge/policies-78-blue)
-![Rules](https://img.shields.io/badge/rules-369-blue)
+![Policies](https://img.shields.io/badge/policies-79-blue)
+![Rules](https://img.shields.io/badge/rules-380-blue)
 ![License](https://img.shields.io/badge/license-Apache%202.0-green)
 
 ## Policy packs
