@@ -118,3 +118,57 @@ forbid (
 ) when {
     context.command like "*git submodule add*"
 };
+
+// vectimus-supchain-009
+// VTMS-2026-0108 | OWASP: ASI04 | SOC2-CC6.8 | NIST-AI-MG-3.2 | EU-AI-15
+// @controls OWASP-ASI04, SOC2-CC6.8, NIST-AI-MG-3.2, EU-AI-15, SLSA-L2, NIST-CSF-GV.SC-05, ISO27001-A.8.25
+// TeamPCP supply chain attack: xinference 2.6.0-2.6.2 contained a base64-encoded credential-stealing
+// payload injected into xinference/__init__.py that executed on import, exfiltrating SSH keys,
+// AWS/GCP credentials, Kubernetes tokens and crypto wallets to C2 at lucyatemysuperbox[.]space.
+// Blocks pip install of known-compromised xinference versions 2.6.0, 2.6.1 and 2.6.2 across both
+// package_operation (context.command) and shell_command (resource.command) action surfaces.
+@id("vectimus-supchain-009")
+@description("Block pip install of TeamPCP-compromised xinference versions 2.6.0, 2.6.1, 2.6.2")
+@incident("VTMS-2026-0108: TeamPCP trojanised xinference 2.6.0-2.6.2 on PyPI, April 2026")
+@controls("OWASP-ASI04, SOC2-CC6.8, NIST-AI-MG-3.2, EU-AI-15, SLSA-L2, NIST-CSF-GV.SC-05, ISO27001-A.8.25")
+@suggested_alternative("Pin to xinference>=2.6.3 (first clean release after yanked versions). Verify the wheel hash matches the entry in .vectimus/supply-allowlist.toml before requesting human approval for any unlisted version.")
+forbid (
+    principal,
+    action in [Vectimus::Action::"package_operation", Vectimus::Action::"shell_command"],
+    resource
+) when {
+    (context has command &&
+        (context.command like "*xinference==2.6.0*" ||
+         context.command like "*xinference==2.6.1*" ||
+         context.command like "*xinference==2.6.2*")) ||
+    (resource has command &&
+        (resource.command like "*xinference==2.6.0*" ||
+         resource.command like "*xinference==2.6.1*" ||
+         resource.command like "*xinference==2.6.2*"))
+};
+
+// vectimus-supchain-010
+// VTMS-2026-0108 | OWASP: ASI04 | SOC2-CC6.8 | NIST-AI-MG-3.2 | EU-AI-15
+// @controls OWASP-ASI04, SOC2-CC6.8, NIST-AI-MG-3.2, EU-AI-15, SLSA-L2, NIST-CSF-GV.SC-05, ISO27001-A.8.25
+// Structural supply-chain gap: TeamPCP-style PyPI package compromises go undetected at the
+// tool-call boundary without pip hash verification, mirroring the npm hash-allowlist pattern
+// from VTMS-2026-0001 (SANDWORM_MODE). Closes the pip equivalent of that gap.
+// Blocks any agent-initiated pip install where the Vectimus supply-chain checker has not set
+// context.pip_package_verified=true, requiring operator-maintained hash registration in
+// .vectimus/supply-allowlist.toml before an AI agent may install any Python package.
+@id("vectimus-supchain-010")
+@description("Block pip install unless package hash pre-verified by Vectimus supply-chain checker")
+@incident("VTMS-2026-0108: structural pip hash-verification gap enabling TeamPCP-style PyPI attacks")
+@controls("OWASP-ASI04, SOC2-CC6.8, NIST-AI-MG-3.2, EU-AI-15, SLSA-L2, NIST-CSF-GV.SC-05, ISO27001-A.8.25")
+@suggested_alternative("Register the package name and expected hash in .vectimus/supply-allowlist.toml. The Vectimus supply-chain checker sets context.pip_package_verified=true when the resolved wheel hash matches the allowlist entry. Human approval is required for first-time registration of any new package or version bump.")
+forbid (
+    principal,
+    action in [Vectimus::Action::"package_operation", Vectimus::Action::"shell_command"],
+    resource
+) when {
+    (
+        (context has command && context.command like "*pip install*") ||
+        (resource has command && resource.command like "*pip install*")
+    ) &&
+    !(context has pip_package_verified && context.pip_package_verified == true)
+};

@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `file-integrity` / `mcp-safety`: protect `.codex/hooks.json` and `.codex/config.toml` from agent-initiated writes and MCP tool calls, matching existing `.claude/` and `.cursor/` protections. Required for the experimental OpenAI Codex CLI hook support in vectimus/vectimus#37.
 
+## [2.2.0] - 2026-04-24
+
+### Added
+
+- vectimus-supchain-009: Block pip install of TeamPCP-compromised xinference versions 2.6.0, 2.6.1 and 2.6.2 (VTMS-2026-0108). Covers both `package_operation` (context.command) and `shell_command` (resource.command) action surfaces. Pin to xinference>=2.6.3.
+- vectimus-supchain-010: Block any agent-initiated pip install where the Vectimus supply-chain checker has not set `context.pip_package_verified=true` (VTMS-2026-0108). Closes the structural pip hash-verification gap that enabled TeamPCP-style PyPI attacks to go undetected at the tool-call boundary. Requires operator hash registration in `.vectimus/supply-allowlist.toml`.
+
 ## [2.1.0] - 2026-03-29
 
 ### Added

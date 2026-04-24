@@ -1,0 +1,47 @@
+[
+  {
+    "uid": { "type": "Vectimus::Agent", "id": "coding_agent" },
+    "attrs": { "name": "coding_agent", "framework": "claude-code" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "pip_xinference_260_pkg" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "pip_xinference_261_pkg" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "pip_xinference_262_pkg" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "pip_xinference_263_pkg" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "pip_xinference_260_shell" },
+    "attrs": { "command": "pip install xinference==2.6.0" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "pip_xinference_263_shell" },
+    "attrs": { "command": "pip install xinference==2.6.3" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "pip_requests_unverified" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "pip_requests_verified" },
+    "attrs": {},
+    "parents": []
+  }
+]
