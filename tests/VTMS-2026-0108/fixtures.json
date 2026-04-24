@@ -1,0 +1,86 @@
+{
+  "vtms_id": "VTMS-2026-0108",
+  "description": "TeamPCP xinference PyPI compromise — supchain-009 version denylist and supchain-010 pip hash-allowlist",
+  "fixtures": [
+    {
+      "id": "supchain-009-block-package-operation-261",
+      "description": "package_operation: pip install xinference==2.6.1 (compromised) must be denied",
+      "policy": "vectimus-supchain-009",
+      "principal": { "type": "Vectimus::Agent", "id": "coding_agent" },
+      "action": { "type": "Vectimus::Action", "id": "package_operation" },
+      "resource": { "type": "Vectimus::Resource", "id": "pip_xinference_261_pkg" },
+      "context": { "command": "pip install xinference==2.6.1" },
+      "expected": "DENY"
+    },
+    {
+      "id": "supchain-009-block-package-operation-260",
+      "description": "package_operation: pip install xinference==2.6.0 (compromised) must be denied",
+      "policy": "vectimus-supchain-009",
+      "principal": { "type": "Vectimus::Agent", "id": "coding_agent" },
+      "action": { "type": "Vectimus::Action", "id": "package_operation" },
+      "resource": { "type": "Vectimus::Resource", "id": "pip_xinference_260_pkg" },
+      "context": { "command": "pip install xinference==2.6.0" },
+      "expected": "DENY"
+    },
+    {
+      "id": "supchain-009-block-package-operation-262",
+      "description": "package_operation: pip install xinference==2.6.2 (compromised) must be denied",
+      "policy": "vectimus-supchain-009",
+      "principal": { "type": "Vectimus::Agent", "id": "coding_agent" },
+      "action": { "type": "Vectimus::Action", "id": "package_operation" },
+      "resource": { "type": "Vectimus::Resource", "id": "pip_xinference_262_pkg" },
+      "context": { "command": "pip install xinference==2.6.2" },
+      "expected": "DENY"
+    },
+    {
+      "id": "supchain-009-block-shell-command-260",
+      "description": "shell_command: pip install xinference==2.6.0 via resource.command must be denied",
+      "policy": "vectimus-supchain-009",
+      "principal": { "type": "Vectimus::Agent", "id": "coding_agent" },
+      "action": { "type": "Vectimus::Action", "id": "shell_command" },
+      "resource": { "type": "Vectimus::Resource", "id": "pip_xinference_260_shell" },
+      "context": {},
+      "expected": "DENY"
+    },
+    {
+      "id": "supchain-009-allow-clean-version-package-operation",
+      "description": "package_operation: pip install xinference==2.6.3 (clean release, hash verified) must be allowed",
+      "policy": "vectimus-supchain-009",
+      "principal": { "type": "Vectimus::Agent", "id": "coding_agent" },
+      "action": { "type": "Vectimus::Action", "id": "package_operation" },
+      "resource": { "type": "Vectimus::Resource", "id": "pip_xinference_263_pkg" },
+      "context": { "command": "pip install xinference==2.6.3", "pip_package_verified": true },
+      "expected": "ALLOW"
+    },
+    {
+      "id": "supchain-009-allow-clean-version-shell-command",
+      "description": "shell_command: pip install xinference==2.6.3 (clean release) must be allowed",
+      "policy": "vectimus-supchain-009",
+      "principal": { "type": "Vectimus::Agent", "id": "coding_agent" },
+      "action": { "type": "Vectimus::Action", "id": "shell_command" },
+      "resource": { "type": "Vectimus::Resource", "id": "pip_xinference_263_shell" },
+      "context": { "pip_package_verified": true },
+      "expected": "ALLOW"
+    },
+    {
+      "id": "supchain-010-block-unverified-pip-install",
+      "description": "package_operation: pip install without pip_package_verified must be denied",
+      "policy": "vectimus-supchain-010",
+      "principal": { "type": "Vectimus::Agent", "id": "coding_agent" },
+      "action": { "type": "Vectimus::Action", "id": "package_operation" },
+      "resource": { "type": "Vectimus::Resource", "id": "pip_requests_unverified" },
+      "context": { "command": "pip install requests==2.31.0" },
+      "expected": "DENY"
+    },
+    {
+      "id": "supchain-010-allow-verified-pip-install",
+      "description": "package_operation: pip install with pip_package_verified=true must be allowed",
+      "policy": "vectimus-supchain-010",
+      "principal": { "type": "Vectimus::Agent", "id": "coding_agent" },
+      "action": { "type": "Vectimus::Action", "id": "package_operation" },
+      "resource": { "type": "Vectimus::Resource", "id": "pip_requests_verified" },
+      "context": { "command": "pip install requests==2.31.0", "pip_package_verified": true },
+      "expected": "ALLOW"
+    }
+  ]
+}
