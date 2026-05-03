@@ -1,0 +1,11 @@
+{
+  "description": "Hand-crafted DENY for vectimus-secrets-005 — both ln -s* and a sensitive-path pattern required",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "ln -s /home/test/.env /scratch/x"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-secrets-005"
+}

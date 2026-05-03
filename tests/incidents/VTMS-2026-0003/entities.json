@@ -1,0 +1,17 @@
+[
+  {
+    "uid": { "type": "Vectimus::Agent", "id": "coding_agent" },
+    "attrs": { "name": "coding_agent", "framework": "claude-code" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "tf_destroy" },
+    "attrs": {},
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::Resource", "id": "tf_plan" },
+    "attrs": {},
+    "parents": []
+  }
+]

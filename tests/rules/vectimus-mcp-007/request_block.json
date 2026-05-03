@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-mcp-007",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"mcp_tool\"",
+  "resource": "Vectimus::Resource::\"mcp_server\"",
+  "context": {
+    "file_path": ".claude/settings.json"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-mcp-007"
+}

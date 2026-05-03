@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-agentgov-008",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"agent_spawn\"",
+  "resource": "Vectimus::Resource::\"agent\"",
+  "context": {
+    "command": "EXCESSIVE_TURNS"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-agentgov-008"
+}

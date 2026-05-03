@@ -1,0 +1,12 @@
+[
+  {
+    "uid": { "type": "Vectimus::Agent", "id": "coding_agent" },
+    "attrs": { "name": "coding_agent", "framework": "claude-code" },
+    "parents": []
+  },
+  {
+    "uid": { "type": "Vectimus::MCP_Server", "id": "unapproved_server" },
+    "attrs": {},
+    "parents": []
+  }
+]

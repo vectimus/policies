@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-secrets-004",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "cat/.ssh/"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-secrets-004"
+}

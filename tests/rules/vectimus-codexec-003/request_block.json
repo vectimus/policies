@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-codexec-003",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "python-csocket"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-codexec-003"
+}

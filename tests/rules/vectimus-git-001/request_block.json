@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-git-001",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"git_operation\"",
+  "resource": "Vectimus::Resource::\"git\"",
+  "context": {
+    "command": "git push--forcemain"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-git-001"
+}

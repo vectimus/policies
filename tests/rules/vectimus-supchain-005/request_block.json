@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-supchain-005",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"file_write\"",
+  "resource": "Vectimus::Resource::\"file\"",
+  "context": {
+    "file_path": "package-lock.json"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-supchain-005"
+}
