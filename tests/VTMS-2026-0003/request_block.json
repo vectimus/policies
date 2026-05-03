@@ -1,6 +1,11 @@
 {
-  "principal": "Agent::\"coding_agent\"",
-  "action": "Action::\"shell_command\"",
-  "resource": "Resource::\"tf_destroy\"",
-  "expected": "DENY"
+  "description": "Agent attempts terraform destroy on production infrastructure",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"infrastructure\"",
+  "resource": "Vectimus::Resource::\"tf_destroy\"",
+  "context": {
+    "command": "terraform destroy -auto-approve"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-infra-001"
 }

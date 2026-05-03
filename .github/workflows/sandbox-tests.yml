@@ -1,0 +1,28 @@
+name: Sandbox Tests
+
+on:
+  pull_request:
+    paths:
+      - "**/*.cedar"
+      - "tests/**"
+      - ".github/workflows/sandbox-tests.yml"
+  push:
+    branches: [main]
+    paths:
+      - "**/*.cedar"
+      - "tests/**"
+  workflow_dispatch:
+
+jobs:
+  sandbox-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: pip install cedarpy pytest
+      - name: Run sandbox replay
+        run: pytest tests/test_sandbox_replay.py -v

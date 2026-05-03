@@ -1,17 +1,17 @@
 [
   {
-    "uid": { "type": "Agent", "id": "coding_agent" },
+    "uid": { "type": "Vectimus::Agent", "id": "coding_agent" },
     "attrs": { "name": "coding_agent", "framework": "claude-code" },
     "parents": []
   },
   {
-    "uid": { "type": "Resource", "id": "tf_destroy" },
-    "attrs": { "command": "terraform destroy -auto-approve" },
+    "uid": { "type": "Vectimus::Resource", "id": "tf_destroy" },
+    "attrs": {},
     "parents": []
   },
   {
-    "uid": { "type": "Resource", "id": "tf_plan" },
-    "attrs": { "command": "terraform plan" },
+    "uid": { "type": "Vectimus::Resource", "id": "tf_plan" },
+    "attrs": {},
     "parents": []
   }
 ]
