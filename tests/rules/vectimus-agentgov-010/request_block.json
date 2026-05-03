@@ -1,0 +1,11 @@
+{
+  "description": "Hand-crafted DENY for vectimus-agentgov-010 — both background=true AND mode=bypassPermissions required",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"agent_spawn\"",
+  "resource": "Vectimus::Resource::\"agent\"",
+  "context": {
+    "command": "spawn agent background=true mode=bypassPermissions"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-agentgov-010"
+}

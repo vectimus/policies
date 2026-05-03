@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-codexec-002",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "bash -i>&/dev/tcp"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-codexec-002"
+}

@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-agentgov-014",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "crontab"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-agentgov-014"
+}

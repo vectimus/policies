@@ -26,46 +26,75 @@ namespace Vectimus {
   action shell_command appliesTo {
     principal: [Agent],
     resource: [Resource],
+    context: {
+      command: String,
+    },
   };
 
   action file_read appliesTo {
     principal: [Agent],
     resource: [Resource],
+    context: {
+      file_path: String,
+    },
   };
 
   action file_write appliesTo {
     principal: [Agent],
     resource: [Resource],
+    context: {
+      file_path: String,
+    },
   };
 
   action git_operation appliesTo {
     principal: [Agent],
     resource: [Resource],
+    context: {
+      command: String,
+    },
   };
 
   action infrastructure appliesTo {
     principal: [Agent],
     resource: [Resource],
+    context: {
+      command: String,
+    },
   };
 
   action package_operation appliesTo {
     principal: [Agent],
     resource: [Resource],
+    context: {
+      command: String,
+    },
   };
 
   action mcp_tool appliesTo {
     principal: [Agent],
     resource: [Tool, MCP_Server],
+    context: {
+      command: String,
+      file_path: String,
+      mcp_tool: String,
+    },
   };
 
   action agent_message appliesTo {
     principal: [Agent],
     resource: [Agent],
+    context: {
+      command: String,
+    },
   };
 
   action agent_spawn appliesTo {
     principal: [Agent],
-    resource: [Agent],
+    resource: [Agent, Tool],
+    context: {
+      command: String,
+    },
   };
 
 }

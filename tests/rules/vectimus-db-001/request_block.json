@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-db-001",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "drizzle-kit push--force"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-db-001"
+}

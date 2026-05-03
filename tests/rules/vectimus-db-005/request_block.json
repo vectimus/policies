@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-db-005",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "rails db:drop"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-db-005"
+}

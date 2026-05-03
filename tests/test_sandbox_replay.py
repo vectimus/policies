@@ -1,19 +1,21 @@
-"""Sandbox replay tests for VTMS-* fixtures.
+"""Sandbox replay tests for incident and per-rule fixtures.
 
-Each fixture under ``tests/VTMS-<year>-<id>/`` describes one incident:
+Two fixture trees are discovered:
 
-- ``entities.json``  — Cedar entities involved
-- ``request_block*.json`` — requests the policies must DENY
-- ``request_allow*.json`` — requests the policies must ALLOW (no over-blocking)
+1. ``tests/incidents/VTMS-<year>-<id>/`` — incident-replay fixtures, one
+   directory per VTMS advisory.  Each contains ``entities.json`` and one or
+   more ``request_*.json`` files with ``expected: "DENY" | "ALLOW"``.
 
-Each request file declares ``expected: "DENY" | "ALLOW"``.  The runner loads
-all ``.cedar`` files in the repo, runs cedarpy.is_authorized, and asserts the
-decision matches.
+2. ``tests/rules/<rule-id>/`` — per-rule unit fixtures, one directory per
+   ``@id(...)`` in the policies.  Same shape as incident fixtures.
 
-Cedar uses default-deny when no permit policies are present.  Vectimus policies
-are forbid-only, so we apply the same convention as the vectimus evaluator:
-``decision == DENY`` with empty ``reasons`` means no forbid rule matched and is
-treated as ALLOW.
+The runner concatenates every ``.cedar`` file in the repo, runs
+``cedarpy.is_authorized``, and asserts the decision matches.
+
+Cedar uses default-deny when no permit policies are present.  Vectimus
+policies are forbid-only, so we apply the same convention as the vectimus
+evaluator: ``decision == DENY`` with empty ``reasons`` means no forbid rule
+matched and is treated as ALLOW.
 """
 
 from __future__ import annotations
@@ -26,6 +28,8 @@ import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TESTS_DIR = Path(__file__).resolve().parent
+INCIDENTS_DIR = TESTS_DIR / "incidents"
+RULES_DIR = TESTS_DIR / "rules"
 
 
 def _load_policies() -> str:
@@ -37,14 +41,17 @@ def _load_policies() -> str:
 
 
 def _discover_cases() -> list[tuple[str, Path, Path]]:
-    """Yield (test_id, fixture_dir, request_file) for every request_*.json fixture."""
+    """Yield (test_id, fixture_dir, request_file) for every fixture."""
     cases: list[tuple[str, Path, Path]] = []
-    for fixture_dir in sorted(TESTS_DIR.glob("VTMS-*")):
-        if not fixture_dir.is_dir():
+    for root, prefix in ((INCIDENTS_DIR, "incidents"), (RULES_DIR, "rules")):
+        if not root.is_dir():
             continue
-        for request_file in sorted(fixture_dir.glob("request_*.json")):
-            test_id = f"{fixture_dir.name}/{request_file.stem}"
-            cases.append((test_id, fixture_dir, request_file))
+        for fixture_dir in sorted(root.iterdir()):
+            if not fixture_dir.is_dir():
+                continue
+            for request_file in sorted(fixture_dir.glob("request_*.json")):
+                test_id = f"{prefix}/{fixture_dir.name}/{request_file.stem}"
+                cases.append((test_id, fixture_dir, request_file))
     return cases
 
 
@@ -83,7 +90,6 @@ def test_sandbox_replay(fixture_dir: Path, request_file: Path, policies_text: st
     if response.decision == cedarpy.Decision.Allow:
         actual = "ALLOW"
     elif not reasons:
-        # Default-deny with no matched forbid rule -> treat as ALLOW
         actual = "ALLOW"
     else:
         actual = "DENY"
@@ -101,4 +107,4 @@ def test_sandbox_replay(fixture_dir: Path, request_file: Path, policies_text: st
 
 def test_at_least_one_fixture_discovered() -> None:
     """Sanity check — fail loudly if fixture discovery silently breaks."""
-    assert len(CASES) > 0, "No VTMS-*/request_*.json fixtures found"
+    assert len(CASES) > 0, "No fixtures found under tests/incidents or tests/rules"

@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-infra-006",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"infrastructure\"",
+  "resource": "Vectimus::Resource::\"infra\"",
+  "context": {
+    "command": "aws sts assume-role"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-infra-006"
+}

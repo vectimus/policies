@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-db-006",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "manage.py flush--no-input"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-db-006"
+}

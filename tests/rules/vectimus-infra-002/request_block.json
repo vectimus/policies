@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-infra-002",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"infrastructure\"",
+  "resource": "Vectimus::Resource::\"infra\"",
+  "context": {
+    "command": "terraform apply-auto-approve"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-infra-002"
+}

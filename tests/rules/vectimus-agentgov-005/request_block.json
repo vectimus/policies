@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-agentgov-005",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"agent_message\"",
+  "resource": "Vectimus::Resource::\"agent\"",
+  "context": {
+    "command": "type=broadcast"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-agentgov-005"
+}

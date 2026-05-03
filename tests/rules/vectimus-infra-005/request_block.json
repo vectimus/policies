@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-infra-005",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"infrastructure\"",
+  "resource": "Vectimus::Resource::\"infra\"",
+  "context": {
+    "command": "docker rm -f"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-infra-005"
+}
