@@ -1,0 +1,10 @@
+{
+  "description": "Negative control: command mentions .env but is not a symlink creation — should not match secrets-005",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "echo 'remember to update .env'"
+  },
+  "expected": "ALLOW"
+}

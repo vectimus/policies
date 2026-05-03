@@ -32,7 +32,7 @@ Cedar policies that govern what AI coding agents can and cannot do.  Every rule 
 Every rule has `@incident` (the real attack it prevents) and `@controls` (compliance framework mappings):
 
 ```cedar
-@id("vectimus-destops-001")
+@id("vectimus-destruct-001")
 @description("Block recursive deletion of root, home or current directory")
 @incident("Home directory deletion via rm -rf reported in Claude Code sessions, 2025")
 @controls("SOC2-CC6.1, EU-AI-15, NIST-CSF-PR.DS-01, ISO27001-A.8.9")

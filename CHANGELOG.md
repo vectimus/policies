@@ -7,9 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-05-03
+
 ### Added
 
+- vectimus-secrets-005: Block creating symlinks pointing at env files, secrets, credentials or SSH/AWS configs.  Closes the symlink-evasion bypass reported in vectimus/vectimus#38 where an agent ran `ln -s /path/.env /tmp/link && cat /tmp/link` to read .env files past `vectimus-secrets-001`.  Includes sandbox replay fixtures under `tests/VTMS-2026-0038/` covering `.env`, `.ssh`, `.aws`, chained `&& cat`, `--symbolic` long flag, and legitimate-symlink negative controls.
 - `file-integrity` / `mcp-safety`: protect `.codex/hooks.json` and `.codex/config.toml` from agent-initiated writes and MCP tool calls, matching existing `.claude/` and `.cursor/` protections. Required for the experimental OpenAI Codex CLI hook support in vectimus/vectimus#37.
+
+### Changed
+
+- Renamed `destructive-ops` rule prefix from `vectimus-destops-*` to `vectimus-destruct-*` to align with the IDs already shipped in the Vectimus PyPI package since 0.21.0.  This is a drift fix — end-users via `pip install vectimus` already have `destruct` IDs in their audit logs and allowlists; canonical was the outlier.  Affected rules: 001 through 006.
+
+### Fixed
+
+- `VERSION` file out of sync with `manifest.json` (was 2.1.0 vs 2.2.0); both now track the canonical version.
 
 ## [2.1.0] - 2026-03-29
 
