@@ -1,0 +1,11 @@
+{
+  "description": "Original chained bypass from issue #38 — ln -s + cat in one command",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "ln -s /home/test/super-safe-project/.env /tmp/env_link && cat /tmp/env_link"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-secrets-005"
+}

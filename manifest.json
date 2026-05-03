@@ -1,7 +1,7 @@
 {
-  "version": "2.2.0",
-  "generated_at": "2026-03-29T00:00:00Z",
-  "policy_count": 79,
+  "version": "2.3.0",
+  "generated_at": "2026-05-03T00:00:00Z",
+  "policy_count": 80,
   "pack_count": 11,
   "packs": [
     {
@@ -29,7 +29,7 @@
       "rule_count": 8
     },
     {
-      "pack": "destops",
+      "pack": "destruct",
       "directory": "destructive-ops",
       "file": "destructive_ops.cedar",
       "rule_count": 6
@@ -62,7 +62,7 @@
       "pack": "secrets",
       "directory": "secrets",
       "file": "secrets.cedar",
-      "rule_count": 4
+      "rule_count": 5
     },
     {
       "pack": "supchain",

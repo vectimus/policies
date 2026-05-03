@@ -1,0 +1,11 @@
+{
+  "description": "Symlink to AWS credentials using long --symbolic flag",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "ln --symbolic /home/test/.aws/credentials /tmp/c"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-secrets-005"
+}

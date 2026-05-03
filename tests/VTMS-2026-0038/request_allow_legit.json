@@ -1,0 +1,10 @@
+{
+  "description": "Legitimate symlink: agent links a Python interpreter into PATH (no sensitive target)",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "ln -s /usr/bin/python3 /home/test/.local/bin/python"
+  },
+  "expected": "ALLOW"
+}
