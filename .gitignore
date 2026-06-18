@@ -1,0 +1,12 @@
+# Editor / IDE
+.vscode/
+.cursor/
+.gemini/
+
+# Local tooling
+.vectimus/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
