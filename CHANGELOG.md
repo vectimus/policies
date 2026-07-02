@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.0] - 2026-07-02
+
+### Added
+
+- vectimus-supchain-009: Block pip install of Hugging Face Transformers 4.56.x–5.2.x (CVE-2026-4372 unauthenticated RCE via config.json injection) (VTMS-2026-0279)
+
 ## [2.3.0] - 2026-05-03
 
 ### Added
