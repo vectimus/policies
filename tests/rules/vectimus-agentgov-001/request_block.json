@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-agentgov-001",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "claude--dangerously-skip-permissions"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-agentgov-001"
+}

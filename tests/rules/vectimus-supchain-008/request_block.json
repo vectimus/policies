@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-supchain-008",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"git_operation\"",
+  "resource": "Vectimus::Resource::\"git\"",
+  "context": {
+    "command": "git submodule add"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-supchain-008"
+}

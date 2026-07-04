@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-destruct-006",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "vectimus "
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-destruct-006"
+}

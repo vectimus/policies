@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-fileint-002",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"file_write\"",
+  "resource": "Vectimus::Resource::\"file\"",
+  "context": {
+    "file_path": "prodDockerfile"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-fileint-002"
+}

@@ -1,0 +1,9 @@
+{
+  "description": "Hand-crafted DENY for vectimus-mcp-001 — default-deny MCP servers not on the approved list (loader rewrites with unless-clause for approved servers; unmodified rule blocks all)",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"mcp_tool\"",
+  "resource": "Vectimus::MCP_Server::\"unapproved_server\"",
+  "context": {},
+  "expected": "DENY",
+  "expected_policy": "vectimus-mcp-001"
+}

@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-git-003",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"git_operation\"",
+  "resource": "Vectimus::Resource::\"git\"",
+  "context": {
+    "command": "git clean-f"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-git-003"
+}

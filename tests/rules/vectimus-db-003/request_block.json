@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-db-003",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "knex migrate:rollback--all"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-db-003"
+}

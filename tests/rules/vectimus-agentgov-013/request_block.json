@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-agentgov-013",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "truncate/var/log"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-agentgov-013"
+}

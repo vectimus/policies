@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-mcp-002",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"mcp_tool\"",
+  "resource": "Vectimus::Resource::\"mcp_server\"",
+  "context": {
+    "mcp_tool": "run_command"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-mcp-002"
+}

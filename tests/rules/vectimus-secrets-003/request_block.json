@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-secrets-003",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"file_read\"",
+  "resource": "Vectimus::Resource::\"file\"",
+  "context": {
+    "file_path": "/secrets/"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-secrets-003"
+}

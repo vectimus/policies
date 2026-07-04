@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-exfil-002",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"shell_command\"",
+  "resource": "Vectimus::Resource::\"shell\"",
+  "context": {
+    "command": "nslookup$("
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-exfil-002"
+}

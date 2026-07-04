@@ -1,0 +1,10 @@
+{
+  "description": "Legitimate terraform plan — no destructive operation",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"infrastructure\"",
+  "resource": "Vectimus::Resource::\"tf_plan\"",
+  "context": {
+    "command": "terraform plan"
+  },
+  "expected": "ALLOW"
+}

@@ -1,0 +1,31 @@
+name: Policy Tests
+
+on:
+  pull_request:
+    paths:
+      - "**/*.cedar"
+      - "schema.cedarschema"
+      - "tests/**"
+      - "scripts/generate-rule-fixtures.py"
+      - ".github/workflows/sandbox-tests.yml"
+  push:
+    branches: [main]
+    paths:
+      - "**/*.cedar"
+      - "schema.cedarschema"
+      - "tests/**"
+  workflow_dispatch:
+
+jobs:
+  policy-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: pip install cedarpy pytest
+      - name: Run policy tests (sandbox replay + schema validation + coverage gate)
+        run: pytest tests/ -v

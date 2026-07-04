@@ -1,0 +1,11 @@
+{
+  "description": "Auto-generated DENY fixture for vectimus-supchain-004",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"package_operation\"",
+  "resource": "Vectimus::Resource::\"package\"",
+  "context": {
+    "command": "npm install -g"
+  },
+  "expected": "DENY",
+  "expected_policy": "vectimus-supchain-004"
+}

@@ -1,0 +1,9 @@
+{
+  "description": "Hand-crafted DENY for vectimus-agentgov-009 — unconditional forbid on TeamCreate tool",
+  "principal": "Vectimus::Agent::\"coding_agent\"",
+  "action": "Vectimus::Action::\"agent_spawn\"",
+  "resource": "Vectimus::Tool::\"TeamCreate\"",
+  "context": {},
+  "expected": "DENY",
+  "expected_policy": "vectimus-agentgov-009"
+}
