@@ -118,3 +118,48 @@ forbid (
 ) when {
     context.command like "*git submodule add*"
 };
+
+// vectimus-supchain-009
+// VTMS-2026-0279 | CVE-2026-4372 | OWASP: ASI04 | SOC2-CC6.8 | NIST-AI-MG-3.2 | EU-AI-15
+// @controls OWASP-ASI04, SOC2-CC6.8, NIST-AI-MG-3.2, EU-AI-15, NIST-CSF-GV.SC-05, ISO27001-A.8.25
+// Hugging Face Transformers 4.56.0-5.2.x: injecting _attn_implementation_internal into a model's
+// config.json on the HF Hub bypasses trust_remote_code=False, triggering unauthenticated RCE when
+// a victim (or AI agent) calls from_pretrained() against the poisoned model.  The optional kernels
+// package is required for the bypass path to fire.  Flaw introduced Aug 2025, patched 2026-03-04
+// in transformers 5.3.0, NVD-disclosed 2026-05-24 — 81-day defender blind spot, ~232M vulnerable
+// downloads.  AI coding agents asked to set up model fine-tuning or inference workflows routinely
+// execute pip install transformers and call from_pretrained() with user-supplied model IDs, making
+// them a direct exploit delivery path.
+@id("vectimus-supchain-009")
+@description("Block pip install of Hugging Face Transformers 4.56.x-5.2.x vulnerable to CVE-2026-4372 unauthenticated RCE via config.json injection")
+@incident("VTMS-2026-0279: CVE-2026-4372, trust_remote_code=False bypass, 81-day NVD blind spot, ~232M vulnerable downloads")
+@controls("OWASP-ASI04, SOC2-CC6.8, NIST-AI-MG-3.2, EU-AI-15, NIST-CSF-GV.SC-05, ISO27001-A.8.25")
+@suggested_alternative("Upgrade to transformers>=5.3.0 which contains the CVE-2026-4372 fix: pip install 'transformers>=5.3.0'")
+forbid (
+    principal,
+    action in [Vectimus::Action::"package_operation", Vectimus::Action::"shell_command"],
+    resource
+) when {
+    // Vulnerable range: transformers 4.56.x through 5.2.x — fixed in 5.3.0 (2026-03-04)
+    // Matches both plain form (transformers==X.Y.Z) and kernels-extra form
+    // (transformers[kernels]==X.Y.Z); the kernels extra is required for exploitation.
+    // Space before "transformers" prevents false-positives from packages whose names
+    // contain "transformers" as a suffix (e.g. my-transformers).
+    context.command like "*pip install* transformers==4.56.*"          ||
+    context.command like "*pip install* transformers==4.57.*"          ||
+    context.command like "*pip install* transformers==4.58.*"          ||
+    context.command like "*pip install* transformers==4.59.*"          ||
+    context.command like "*pip install* transformers==5.0.*"           ||
+    context.command like "*pip install* transformers==5.1.*"           ||
+    context.command like "*pip install* transformers==5.2.*"           ||
+    context.command like "*pip install* transformers[kernels]==4.56.*" ||
+    context.command like "*pip install* transformers[kernels]==4.57.*" ||
+    context.command like "*pip install* transformers[kernels]==4.58.*" ||
+    context.command like "*pip install* transformers[kernels]==4.59.*" ||
+    context.command like "*pip install* transformers[kernels]==5.0.*"  ||
+    context.command like "*pip install* transformers[kernels]==5.1.*"  ||
+    context.command like "*pip install* transformers[kernels]==5.2.*"
+};
+// Override: to pin a vulnerable version for controlled regression testing, add an explicit
+// permit rule scoped to a sandboxed Agent principal with network egress blocked at the
+// infrastructure layer so from_pretrained() cannot reach the HF Hub.

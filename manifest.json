@@ -1,7 +1,7 @@
 {
-  "version": "2.3.0",
-  "generated_at": "2026-05-03T00:00:00Z",
-  "policy_count": 80,
+  "version": "2.4.0",
+  "generated_at": "2026-07-02T00:00:00Z",
+  "policy_count": 81,
   "pack_count": 11,
   "packs": [
     {
@@ -68,7 +68,7 @@
       "pack": "supchain",
       "directory": "supply-chain",
       "file": "supply_chain.cedar",
-      "rule_count": 8
+      "rule_count": 9
     }
   ]
 }
