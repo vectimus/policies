@@ -1,0 +1,36 @@
+name: Windows companion guard
+
+# Runs against this repo's own tree -- the authoritative corpus that feeds the
+# live API -- so a Windows-targeting file_path pattern added without its
+# lowercase/forward-slash companion (a fail-open once a POSIX evaluator
+# canonicalises a Windows path) is caught here at the source, not only in the
+# downstream vendored copy.  Read-only check, no secrets, no deploy.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.cedar"
+      - "scripts/check_windows_companions.py"
+      - ".github/workflows/windows-companion-guard.yml"
+  pull_request:
+    paths:
+      - "**/*.cedar"
+      - "scripts/check_windows_companions.py"
+      - ".github/workflows/windows-companion-guard.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout policies
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check Windows-path companions
+        run: python scripts/check_windows_companions.py
