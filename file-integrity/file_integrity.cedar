@@ -269,7 +269,12 @@ forbid (
     // Windows AppData equivalents
     context.file_path like "*\\AppData\\Roaming\\Claude\\*" ||
     context.file_path like "*\\AppData\\Roaming\\Cursor\\*" ||
-    context.file_path like "*\\AppData\\Roaming\\Windsurf\\*"
+    context.file_path like "*\\AppData\\Roaming\\Windsurf\\*" ||
+    // Canonicalised Windows form: the Pi adapter lowercases and forward-slashes
+    // Windows paths for a POSIX evaluator, so these AppData dirs arrive lowercased.
+    context.file_path like "*/appdata/roaming/claude/*" ||
+    context.file_path like "*/appdata/roaming/cursor/*" ||
+    context.file_path like "*/appdata/roaming/windsurf/*"
 };
 // Override: AI assistant config directories are human-administered.
 // Do not grant agents write access to these directories.
